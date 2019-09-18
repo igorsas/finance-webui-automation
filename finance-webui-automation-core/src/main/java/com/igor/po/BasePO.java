@@ -1,5 +1,5 @@
 package com.igor.po;
 
-public class BasePO {
+public abstract class BasePO {
 
 }
