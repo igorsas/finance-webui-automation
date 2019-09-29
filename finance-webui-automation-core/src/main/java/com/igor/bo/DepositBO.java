@@ -1,6 +1,8 @@
 package com.igor.bo;
 
+
 import com.igor.po.DepositPO;
+import com.igor.utils.MoneyUtil;
 
 import java.math.BigDecimal;
 
@@ -31,5 +33,32 @@ public class DepositBO {
 
     public void submit() {
         depositPO.calculate();
+    }
+
+    public BigDecimal getInitialSumInSelectedCurrency() {
+        return depositPO.getInitialSumInSelectedCurrency();
+    }
+
+    public BigDecimal getInitialSumInUAH() {
+        return depositPO.getInitialSumInUAH();
+    }
+
+    public BigDecimal getSumOfPercentsInSelectedCurrency() {
+        return depositPO.getSumOfPercentsInSelectedCurrency();
+    }
+
+    public BigDecimal getSumOfPercentInUAH() {
+        return depositPO.getSumOfPercentInUAH();
+    }
+
+    public BigDecimal getFinalSum() {
+        return depositPO.getFinalSum();
+    }
+
+    public BigDecimal getRate() {
+        String rateInfo = depositPO.getInfoAboutRate();
+        rateInfo = rateInfo.substring(rateInfo.indexOf('('), rateInfo.indexOf(')'));
+        rateInfo = rateInfo.replaceAll("[A-Z()]", "");
+        return new BigDecimal(MoneyUtil.clearTextForConverting(rateInfo));
     }
 }
