@@ -63,9 +63,9 @@ public class DepositPO {
     private WebElement initialSumInSelectedCurrency;
     @FindBy(xpath = "//*[@id='info_span']/preceding-sibling::div[@class='info-block']/table[@class='summary_table']/tbody/tr[2]/td[3]")
     private WebElement initialSumInUAH;
-    @FindBy(xpath = "//*[@id='info_span']/preceding-sibling::div[@class='info-block']/table[@class='summary_table']/tbody/tr[lcontains(contains(text(),'%')]/td[2]")
+    @FindBy(xpath = "//*[@id='info_span']/preceding-sibling::div[@class='info-block']/table[@class='summary_table']/tbody//p/../../td[2]")
     private WebElement sumOfPercentsInSelectedCurrency;
-    @FindBy(xpath = "//*[@id='info_span']/preceding-sibling::div[@class='info-block']/table[@class='summary_table']/tbody/tr[contains(contains(text(),'%'))]/td[3]")
+    @FindBy(xpath = "//*[@id='info_span']/preceding-sibling::div[@class='info-block']/table[@class='summary_table']/tbody//p/../../td[3]")
     private WebElement sumOfPercentInUAH;
     @FindBy(xpath = "//*[@id='info_span']/preceding-sibling::div[@class='info-block']/table[@class='summary_table']/tbody/tr[last()]/td[2]")
     private WebElement finalSum;
