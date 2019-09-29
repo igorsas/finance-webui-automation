@@ -8,13 +8,17 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.math.BigDecimal;
+import java.util.concurrent.TimeUnit;
+
+import static com.igor.utils.MoneyUtil.clearTextForConverting;
+
 public class DepositPO {
     protected WebDriver driver;
     protected WebDriverWait webDriverWait;
 
     public DepositPO(){
         driver = DriverManager.getDriver();
-        driver.get("initial_url");
         webDriverWait = new WebDriverWait(driver, 30);
         PageFactory.initElements(driver, this);
     }
@@ -26,7 +30,7 @@ public class DepositPO {
     @FindBy(name = "interest_rate")
     private WebElement interestRateInputField;
     @FindBy(name = "start_date")
-    private WebElement startDateButton;
+    private WebElement startDateInputField;
     @FindBy(name = "term")
     private WebElement termInputField;
     @FindBy(name = "term_length")
@@ -55,11 +59,100 @@ public class DepositPO {
     @FindBy(name = "submit_it")
     private WebElement submitButton;
 
+    //result
+    @FindBy(xpath = "//*[@id='info_span']/preceding-sibling::div[@class='info-block']/table[@class='summary_table']/tbody/tr[2]/td[2]")
+    private WebElement initialSumInSelectedCurrency;
+    @FindBy(xpath = "//*[@id='info_span']/preceding-sibling::div[@class='info-block']/table[@class='summary_table']/tbody/tr[2]/td[3]")
+    private WebElement initialSumInUAH;
+    @FindBy(xpath = "//*[@id='info_span']/preceding-sibling::div[@class='info-block']/table[@class='summary_table']/tbody/tr[lcontains(contains(text(),'%')]/td[2]")
+    private WebElement sumOfPercentsInSelectedCurrency;
+    @FindBy(xpath = "//*[@id='info_span']/preceding-sibling::div[@class='info-block']/table[@class='summary_table']/tbody/tr[contains(contains(text(),'%'))]/td[3]")
+    private WebElement sumOfPercentInUAH;
+    @FindBy(xpath = "//*[@id='info_span']/preceding-sibling::div[@class='info-block']/table[@class='summary_table']/tbody/tr[last()]/td[2]")
+    private WebElement finalSum;
+    @FindBy(id = "info_span")
+    private WebElement infoAboutRate;
+
+    public BigDecimal getInitialSumInSelectedCurrency() {
+        return new BigDecimal(clearTextForConverting(initialSumInSelectedCurrency.getText()));
+    }
+
+    public BigDecimal getInitialSumInUAH() {
+        return new BigDecimal(clearTextForConverting(initialSumInUAH.getText()));
+    }
+
+    public BigDecimal getSumOfPercentsInSelectedCurrency() {
+        return new BigDecimal(clearTextForConverting(sumOfPercentsInSelectedCurrency.getText()));
+    }
+
+    public BigDecimal getSumOfPercentInUAH() {
+        return new BigDecimal(clearTextForConverting(sumOfPercentInUAH.getText()));
+    }
+
+    public BigDecimal getFinalSum() {
+        return new BigDecimal(clearTextForConverting(finalSum.getText()));
+    }
+
+    public String getInfoAboutRate() {
+        return infoAboutRate.getText();
+    }
+
     public DepositPO setCurrency(String currencyCode){
         Select drpCurrency = new Select(currency);
         drpCurrency.selectByValue(currencyCode);
         return this;
     }
 
-    
+    public DepositPO setSum(BigDecimal sum) {
+        sumInputField.clear();
+        sumInputField.sendKeys(sum.toString());
+        return this;
+    }
+
+    public DepositPO setInterestRate(BigDecimal percent){
+        interestRateInputField.clear();
+        interestRateInputField.sendKeys(percent.toString());
+        return this;
+    }
+
+    public DepositPO setStartDate(String date){
+        startDateInputField.clear();
+        startDateInputField.sendKeys(date);
+        return this;
+    }
+
+    public DepositPO setTerm(Integer term){
+        termInputField.clear();
+        termInputField.sendKeys(term.toString());
+        return this;
+    }
+
+    public DepositPO setTermType(String type){
+        Select drpTermType = new Select(termType);
+        drpTermType.selectByValue(type);
+        return this;
+    }
+
+    public DepositPO setReplenishment(String replenishmentType){
+        Select drpReplenishment = new Select(replenishment);
+        drpReplenishment.selectByValue(replenishmentType);
+        return this;
+    }
+
+    public DepositPO setSumOfRegularReplenishment(BigDecimal sum){
+        sumOfRegularReplenishmentInputField.clear();
+        sumOfRegularReplenishmentInputField.sendKeys(sum.toString());
+        return this;
+    }
+
+    public DepositPO setTypeOfCapitalization(String type){
+        Select drpTypeOfCapitalization = new Select(typeOfCapitalization);
+        drpTypeOfCapitalization.selectByValue(type);
+        return this;
+    }
+
+    public DepositPO calculate(){
+        submitButton.click();
+        return this;
+    }
 }

@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Properties;
 
 public class Property {
-    private static final Logger LOGGER = LogManager.getLogger(Property.class);
+//    private static final Logger LOGGER = LogManager.getLogger(Property.class);
 
     public static String getProperty(final String keyToFile) {
         Properties properties = new Properties();
@@ -17,7 +17,7 @@ public class Property {
             properties.load(Objects.requireNonNull(input));
             return properties.getProperty(keyToFile);
         } catch (IOException e) {
-            LOGGER.error(e.getMessage());
+//            LOGGER.error(e.getMessage());
             e.printStackTrace();
             return null;
         }
