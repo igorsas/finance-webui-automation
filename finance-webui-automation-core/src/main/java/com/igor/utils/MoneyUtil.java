@@ -21,10 +21,4 @@ public class MoneyUtil {
     private static BigDecimal roundUp(BigDecimal value, int accuracy){
         return value.setScale(accuracy, RoundingMode.UP);
     }
-
-    public static void main(String[] args) {
-        BigDecimal a = new BigDecimal(100.2502);
-        a = roundUp(a, 2);
-        System.out.println(a);
-    }
 }

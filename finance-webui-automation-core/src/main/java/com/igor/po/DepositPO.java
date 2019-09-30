@@ -1,26 +1,14 @@
 package com.igor.po;
 
-import com.igor.utils.driver.DriverManager;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.math.BigDecimal;
 
 import static com.igor.utils.MoneyUtil.clearTextForConverting;
 
-public class DepositPO {
-    protected WebDriver driver;
-    protected WebDriverWait webDriverWait;
-
-    public DepositPO(){
-        driver = DriverManager.getDriver();
-        webDriverWait = new WebDriverWait(driver, 30);
-        PageFactory.initElements(driver, this);
-    }
+public class DepositPO extends BasePO {
     //main data
     @FindBy(name = "currency")
     private WebElement currency;
@@ -96,7 +84,7 @@ public class DepositPO {
         return infoAboutRate.getText();
     }
 
-    public DepositPO setCurrency(String currencyCode){
+    public DepositPO setCurrency(String currencyCode) {
         Select drpCurrency = new Select(currency);
         drpCurrency.selectByValue(currencyCode);
         return this;
@@ -108,49 +96,49 @@ public class DepositPO {
         return this;
     }
 
-    public DepositPO setInterestRate(BigDecimal percent){
+    public DepositPO setInterestRate(BigDecimal percent) {
         interestRateInputField.clear();
         interestRateInputField.sendKeys(percent.toString());
         return this;
     }
 
-    public DepositPO setStartDate(String date){
+    public DepositPO setStartDate(String date) {
         startDateInputField.clear();
         startDateInputField.sendKeys(date);
         return this;
     }
 
-    public DepositPO setTerm(Integer term){
+    public DepositPO setTerm(Integer term) {
         termInputField.clear();
         termInputField.sendKeys(term.toString());
         return this;
     }
 
-    public DepositPO setTermType(String type){
+    public DepositPO setTermType(String type) {
         Select drpTermType = new Select(termType);
         drpTermType.selectByValue(type);
         return this;
     }
 
-    public DepositPO setReplenishment(String replenishmentType){
+    public DepositPO setReplenishment(String replenishmentType) {
         Select drpReplenishment = new Select(replenishment);
         drpReplenishment.selectByValue(replenishmentType);
         return this;
     }
 
-    public DepositPO setSumOfRegularReplenishment(BigDecimal sum){
+    public DepositPO setSumOfRegularReplenishment(BigDecimal sum) {
         sumOfRegularReplenishmentInputField.clear();
         sumOfRegularReplenishmentInputField.sendKeys(sum.toString());
         return this;
     }
 
-    public DepositPO setTypeOfCapitalization(String type){
+    public DepositPO setTypeOfCapitalization(String type) {
         Select drpTypeOfCapitalization = new Select(typeOfCapitalization);
         drpTypeOfCapitalization.selectByValue(type);
         return this;
     }
 
-    public DepositPO calculate(){
+    public DepositPO calculate() {
         submitButton.click();
         return this;
     }

@@ -16,4 +16,12 @@ public class DepositAssertion {
         amountInUAH = depositBO.getSumOfPercentInUAH();
         PriceAssertion.assertPrice(MoneyUtil.convertMoney(amountInSelectedCurrency, rate, 2), amountInUAH, "Rate for initial sum is different");
     }
+
+    public static void assertTotal(DepositBO depositBO){
+        BigDecimal initialSum = depositBO.getInitialSum();
+        BigDecimal finalSum = depositBO.getFinalSum();
+        BigDecimal interestRate = depositBO.getInterestRate();
+
+//        PriceAssertion.assertPrice();
+    }
 }

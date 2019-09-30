@@ -13,6 +13,9 @@ repositories {
 dependencies {
     testCompile 'org.testng:testng:7.0.0-beta3'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.8.1'
+    // https://mvnrepository.com/artifact/joda-time/joda-time
+    compile group: 'joda-time', name: 'joda-time', version: '2.3'
+
 }
 
 test {
