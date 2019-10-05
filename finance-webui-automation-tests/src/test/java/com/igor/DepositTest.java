@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
 
 import static com.igor.assertion.DepositAssertion.assertExchangeRate;
+import static com.igor.assertion.DepositAssertion.assertTotal;
 
 public class DepositTest extends BaseTest{
 
@@ -25,6 +26,7 @@ public class DepositTest extends BaseTest{
         depositBO.setDateAndTerms(dateTime, 5, TermType.MONTHS);
         depositBO.setAdditionalInfo(BigDecimal.valueOf(5.0), ReplenishmentType.MONTHLY, CapitalizationType.MONTHLY);
         depositBO.submit();
+        assertTotal(depositBO);
         assertExchangeRate(depositBO);
         try {
             TimeUnit.SECONDS.sleep(10);
