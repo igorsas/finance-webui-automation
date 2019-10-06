@@ -8,8 +8,6 @@ import com.igor.model.TermType;
 import com.igor.po.DepositPO;
 import com.igor.utils.MoneyUtil;
 import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
 
@@ -24,7 +22,6 @@ public class DepositBO {
     private DateTime startDate;
     private DateTime finishDate;
     private int term;
-    private int daysInTerm;
     private TermType termType;
     private BigDecimal regularReplenishmentSum;
     private ReplenishmentType replenishmentType;
@@ -52,7 +49,6 @@ public class DepositBO {
         this.termType = termType;
         term = termType == TermType.YEARS ? term * MONTH_IN_YEAR : term;
         this.finishDate = this.startDate.plusMonths(term);
-        this.daysInTerm = Days.daysBetween(new LocalDate(this.startDate), new LocalDate(this.finishDate)).getDays();
     }
 
     public void setAdditionalInfo(BigDecimal sumRegularReplenishment, ReplenishmentType typeReplenishment, CapitalizationType typeOfCapitalization) {
@@ -113,10 +109,6 @@ public class DepositBO {
 
     public int getTerm() {
         return term;
-    }
-
-    public int getDaysInTerm() {
-        return daysInTerm;
     }
 
     public TermType getTermType() {

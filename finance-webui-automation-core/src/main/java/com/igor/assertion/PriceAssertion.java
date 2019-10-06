@@ -46,8 +46,9 @@ public class PriceAssertion {
 
     static void assertPrice(BigDecimal actual, BigDecimal expected, String msg) {
         assertion = new Assertion();
-        BigDecimal act = MoneyUtil.roundValue(convertNullToZeroValue(actual), 2);
-        BigDecimal exp = MoneyUtil.roundValue(convertNullToZeroValue(expected), 2);
+        //TODO: should be review accuracy have to be 2
+        BigDecimal act = MoneyUtil.roundValue(convertNullToZeroValue(actual), 1);
+        BigDecimal exp = MoneyUtil.roundValue(convertNullToZeroValue(expected), 1);
         assertion.assertTrue(isPriceSame(act, exp), String.format("%s1 is actual %s2, expect %s3", msg, actual, expected));
     }
 

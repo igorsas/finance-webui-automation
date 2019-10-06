@@ -2,6 +2,7 @@ package com.igor.po;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 import java.math.BigDecimal;
@@ -139,7 +140,7 @@ public class DepositPO extends BasePO {
     }
 
     public DepositPO calculate() {
-        submitButton.click();
+        webDriverWait.until(ExpectedConditions.elementToBeClickable(submitButton)).click();
         return this;
     }
 }

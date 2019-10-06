@@ -35,7 +35,7 @@ public class DriverManager {
         DRIVER_POOL.get().manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         DRIVER_POOL.get().manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
         DRIVER_POOL.get().manage().timeouts().setScriptTimeout(50, TimeUnit.SECONDS);
-        DRIVER_POOL.get().manage().window().fullscreen();
+        DRIVER_POOL.get().manage().window().maximize();
     }
 
     public static void quit() {

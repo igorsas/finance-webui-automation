@@ -11,7 +11,6 @@ import org.joda.time.DateTime;
 import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
-import java.util.concurrent.TimeUnit;
 
 import static com.igor.assertion.DepositAssertion.*;
 
@@ -27,11 +26,6 @@ public class DepositTest extends BaseTest{
         depositBO.submit();
         assertTotal(depositBO);
         assertExchangeRate(depositBO);
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Test()
@@ -39,15 +33,10 @@ public class DepositTest extends BaseTest{
         DateTime dateTime = DateUtil.getDateTimeByMonthAndDay(10, 15);
         DepositBO depositBO = new DepositBO();
         depositBO.setMainDepositInfo(Currency.USD, BigDecimal.valueOf(900.0), BigDecimal.valueOf(15.0));
-        depositBO.setDateAndTerms(dateTime, 3, TermType.YEARS);
-        depositBO.setAdditionalInfo(BigDecimal.valueOf(5.0), ReplenishmentType.QUARTERLY, CapitalizationType.YEARLY);
+        depositBO.setDateAndTerms(dateTime, 2, TermType.YEARS);
+        depositBO.setAdditionalInfo(BigDecimal.valueOf(5.0), ReplenishmentType.QUARTERLY, CapitalizationType.MONTHLY);
         depositBO.submit();
         assertTotal(depositBO);
         assertExchangeRate(depositBO);
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }
