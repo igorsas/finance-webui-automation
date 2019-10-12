@@ -1,9 +1,7 @@
 package com.igor.assertion;
 
 import com.igor.bo.DepositBO;
-import com.igor.model.CapitalizationType;
-import com.igor.model.ReplenishmentType;
-import com.igor.model.TermType;
+import com.igor.model.daoModel.ReplenishmentType;
 import com.igor.utils.MoneyUtil;
 import org.joda.time.DateTime;
 
@@ -32,7 +30,7 @@ public class DepositAssertion {
         DateTime startDate = depositBO.getStartDate();
         DateTime finishDate = depositBO.getFinishDate();
 
-        CapitalizationType capitalizationType = depositBO.getCapitalizationType();
+        ReplenishmentType capitalizationType = depositBO.getCapitalizationType();
         ReplenishmentType replenishmentType = depositBO.getReplenishmentType();
 
         BigDecimal expectedFinalSum = getFinalSum(initialSum, interestRate, startDate, finishDate, capitalizationType, replenishmentType, replenishmentSum);
@@ -47,13 +45,12 @@ public class DepositAssertion {
         BigDecimal interestRate = depositBO.getInterestRate().divide(BigDecimal.valueOf(100.0), 5, BigDecimal.ROUND_HALF_UP);
         BigDecimal replenishmentSum = depositBO.getRegularReplenishmentSum();
 
-        CapitalizationType capitalizationType = depositBO.getCapitalizationType();
-        TermType termType = depositBO.getTermType();
+        ReplenishmentType capitalizationType = depositBO.getCapitalizationType();
         int term = depositBO.getTerm();
         ReplenishmentType replenishmentType = depositBO.getReplenishmentType();
 
 
-        BigDecimal expectedFinalSum = getFinalSumOld(initialSum, interestRate, termType, term, capitalizationType, replenishmentType, replenishmentSum);
+        BigDecimal expectedFinalSum = getFinalSumOld(initialSum, interestRate, term, capitalizationType, replenishmentType, replenishmentSum);
 
         PriceAssertion.assertPrice(finalSum, expectedFinalSum, "Final sum is incorrect");
     }

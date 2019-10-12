@@ -1,10 +1,9 @@
 package com.igor.bo;
 
 
-import com.igor.model.CapitalizationType;
-import com.igor.model.Currency;
-import com.igor.model.ReplenishmentType;
-import com.igor.model.TermType;
+import com.igor.model.daoModel.Currency;
+import com.igor.model.daoModel.ReplenishmentType;
+import com.igor.model.daoModel.Term;
 import com.igor.po.DepositPO;
 import com.igor.utils.MoneyUtil;
 import org.joda.time.DateTime;
@@ -12,6 +11,7 @@ import org.joda.time.DateTime;
 import java.math.BigDecimal;
 
 import static com.igor.utils.Constants.MONTH_IN_YEAR;
+import static com.igor.utils.Constants.YEARS_STR;
 import static com.igor.utils.DateUtil.getFormatter;
 
 public class DepositBO {
@@ -22,17 +22,17 @@ public class DepositBO {
     private DateTime startDate;
     private DateTime finishDate;
     private int term;
-    private TermType termType;
+    private String termType;
     private BigDecimal regularReplenishmentSum;
     private ReplenishmentType replenishmentType;
-    private CapitalizationType capitalizationType;
+    private ReplenishmentType capitalizationType;
 
     public DepositBO() {
         depositPO = new DepositPO();
     }
 
     public void setMainDepositInfo(Currency currency, BigDecimal sum, BigDecimal interestRate) {
-        depositPO.setCurrency(currency.getCurrency())
+        depositPO.setCurrency(currency.getCode())
                 .setSum(sum)
                 .setInterestRate(interestRate);
         this.currency = currency;
@@ -40,18 +40,18 @@ public class DepositBO {
         this.interestRate = interestRate;
     }
 
-    public void setDateAndTerms(DateTime date, Integer term, TermType termType) {
-        depositPO.setStartDate(getFormatter().print(date))
+    public void setDateAndTerms(Term termModel) {
+        this.startDate = new DateTime(termModel.getStartDate().getTime());
+        this.term = termModel.getPeriod();
+        this.termType = termModel.getPeriodType();
+        depositPO.setStartDate(getFormatter().print(startDate))
                 .setTerm(term)
-                .setTermType(termType.getType());
-        this.startDate = date;
-        this.term = term;
-        this.termType = termType;
-        term = termType == TermType.YEARS ? term * MONTH_IN_YEAR : term;
+                .setTermType(termType);
+        term = termType.equals(YEARS_STR) ? term * MONTH_IN_YEAR : term;
         this.finishDate = this.startDate.plusMonths(term);
     }
 
-    public void setAdditionalInfo(BigDecimal sumRegularReplenishment, ReplenishmentType typeReplenishment, CapitalizationType typeOfCapitalization) {
+    public void setAdditionalInfo(BigDecimal sumRegularReplenishment, ReplenishmentType typeReplenishment, ReplenishmentType typeOfCapitalization) {
         depositPO.setSumOfRegularReplenishment(sumRegularReplenishment)
                 .setReplenishment(typeReplenishment.getType())
                 .setTypeOfCapitalization(typeOfCapitalization.getType());
@@ -111,7 +111,7 @@ public class DepositBO {
         return term;
     }
 
-    public TermType getTermType() {
+    public String getTermType() {
         return termType;
     }
 
@@ -123,7 +123,7 @@ public class DepositBO {
         return replenishmentType;
     }
 
-    public CapitalizationType getCapitalizationType() {
+    public ReplenishmentType getCapitalizationType() {
         return capitalizationType;
     }
 

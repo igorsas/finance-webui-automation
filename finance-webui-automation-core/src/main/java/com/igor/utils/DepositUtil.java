@@ -1,8 +1,6 @@
 package com.igor.utils;
 
-import com.igor.model.CapitalizationType;
-import com.igor.model.ReplenishmentType;
-import com.igor.model.TermType;
+import com.igor.model.daoModel.ReplenishmentType;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -27,15 +25,15 @@ public class DepositUtil {
      */
     public static BigDecimal getFinalSum(BigDecimal initialSum, BigDecimal interestRate,
                                          DateTime startDate, DateTime finishDate,
-                                         CapitalizationType capitalizationType,
+                                         ReplenishmentType capitalizationType,
                                          ReplenishmentType replenishmentType, BigDecimal replenishmentSum) {
         int termInDays = Days.daysBetween(new LocalDate(startDate), new LocalDate(finishDate)).getDays();
         BigDecimal finalSum;
-        if (replenishmentType == ReplenishmentType.MONTHLY) {
+        if (replenishmentType.getType().equals(MONTHLY_STR)) {
             finalSum = getFinalSumByCapitalizationType(initialSum, interestRate, startDate, finishDate, termInDays, capitalizationType, replenishmentSum, MONTH_IN_MONTH);
-        } else if (replenishmentType == ReplenishmentType.QUARTERLY) {
+        } else if (replenishmentType.getType().equals(QUARTERLY_STR)) {
             finalSum = getFinalSumByCapitalizationType(initialSum, interestRate, startDate, finishDate, termInDays, capitalizationType, replenishmentSum, MONTH_IN_QUARTER);
-        } else if (replenishmentType == ReplenishmentType.YEARLY) {
+        } else if (replenishmentType.getType().equals(YEARLY_STR)) {
             finalSum = getFinalSumByCapitalizationType(initialSum, interestRate, startDate, finishDate, termInDays, capitalizationType, replenishmentSum, MONTH_IN_YEAR);
         } else {
             finalSum = getFinalSumByCapitalizationType(initialSum, interestRate, startDate, finishDate, termInDays, capitalizationType, replenishmentSum, termInDays);
@@ -48,15 +46,15 @@ public class DepositUtil {
                                                               DateTime startDate,
                                                               DateTime finishDate,
                                                               int termInMonth,
-                                                              CapitalizationType capitalizationType,
+                                                              ReplenishmentType capitalizationType,
                                                               BigDecimal replenishmentSum,
                                                               int replenishmentPeriodInMonths) {
         BigDecimal finalSum;
-        if (capitalizationType == CapitalizationType.MONTHLY) {
+        if (capitalizationType.getType().equals(MONTHLY_STR)) {
             finalSum = getFinalSumByCapitalizationAndReplenishment(initialSum, interestRate, startDate, finishDate, termInMonth, replenishmentSum, replenishmentPeriodInMonths, MONTH_IN_MONTH);
-        } else if (capitalizationType == CapitalizationType.QUARTERLY) {
+        } else if (capitalizationType.getType().equals(QUARTERLY_STR)) {
             finalSum = getFinalSumByCapitalizationAndReplenishment(initialSum, interestRate, startDate, finishDate, termInMonth, replenishmentSum, replenishmentPeriodInMonths, MONTH_IN_QUARTER);
-        } else if (capitalizationType == CapitalizationType.YEARLY) {
+        } else if (capitalizationType.getType().equals(YEARLY_STR)) {
             finalSum = getFinalSumByCapitalizationAndReplenishment(initialSum, interestRate, startDate, finishDate, termInMonth, replenishmentSum, replenishmentPeriodInMonths, MONTH_IN_YEAR);
         } else {
             finalSum = getFinalSumByCapitalizationAndReplenishment(initialSum, interestRate, startDate, finishDate, termInMonth, replenishmentSum, replenishmentPeriodInMonths, termInMonth);
@@ -118,15 +116,14 @@ public class DepositUtil {
      * method for getting final sum when percent is the same for every month
      */
     public static BigDecimal getFinalSumOld(BigDecimal initialSum, BigDecimal interestRate,
-                                            TermType termType, int term, CapitalizationType capitalizationType,
+                                            int term, ReplenishmentType capitalizationType,
                                             ReplenishmentType replenishmentType, BigDecimal replenishmentSum) {
-        term = termType == TermType.YEARS ? term * MONTH_IN_YEAR : term;
         BigDecimal finalSum;
-        if (replenishmentType == ReplenishmentType.MONTHLY) {
+        if (replenishmentType.getType().equals(MONTHLY_STR)) {
             finalSum = getFinalSumByCapitalizationTypeOld(initialSum, interestRate, term, capitalizationType, replenishmentSum, MONTH_IN_MONTH);
-        } else if (replenishmentType == ReplenishmentType.QUARTERLY) {
+        } else if (replenishmentType.getType().equals(QUARTERLY_STR)) {
             finalSum = getFinalSumByCapitalizationTypeOld(initialSum, interestRate, term, capitalizationType, replenishmentSum, MONTH_IN_QUARTER);
-        } else if (replenishmentType == ReplenishmentType.YEARLY) {
+        } else if (replenishmentType.getType().equals(YEARLY_STR)) {
             finalSum = getFinalSumByCapitalizationTypeOld(initialSum, interestRate, term, capitalizationType, replenishmentSum, MONTH_IN_YEAR);
         } else {
             finalSum = getFinalSumByCapitalizationTypeOld(initialSum, interestRate, term, capitalizationType, replenishmentSum, term);
@@ -137,17 +134,17 @@ public class DepositUtil {
     private static BigDecimal getFinalSumByCapitalizationTypeOld(BigDecimal initialSum,
                                                                  BigDecimal interestRate,
                                                                  int termInMonth,
-                                                                 CapitalizationType capitalizationType,
+                                                                 ReplenishmentType capitalizationType,
                                                                  BigDecimal replenishmentSum,
                                                                  int replenishmentPeriodInMonths) {
         BigDecimal finalSum;
-        if (capitalizationType == CapitalizationType.MONTHLY) {
+        if (capitalizationType.getType().equals(MONTHLY_STR)) {
             interestRate = interestRate.divide(BigDecimal.valueOf(MONTH_IN_YEAR), 5, BigDecimal.ROUND_HALF_UP);
             finalSum = getFinalSumByCapitalizationAndReplenishmentOld(initialSum, interestRate, termInMonth, replenishmentSum, replenishmentPeriodInMonths, MONTH_IN_MONTH);
-        } else if (capitalizationType == CapitalizationType.QUARTERLY) {
+        } else if (capitalizationType.getType().equals(QUARTERLY_STR)) {
             interestRate = interestRate.divide(BigDecimal.valueOf(QUARTER_IN_YEAR), 5, BigDecimal.ROUND_HALF_UP);
             finalSum = getFinalSumByCapitalizationAndReplenishmentOld(initialSum, interestRate, termInMonth, replenishmentSum, replenishmentPeriodInMonths, MONTH_IN_QUARTER);
-        } else if (capitalizationType == CapitalizationType.YEARLY) {
+        } else if (capitalizationType.getType().equals(YEARLY_STR)) {
             finalSum = getFinalSumByCapitalizationAndReplenishmentOld(initialSum, interestRate, termInMonth, replenishmentSum, replenishmentPeriodInMonths, MONTH_IN_YEAR);
         } else {
             finalSum = getFinalSumByCapitalizationAndReplenishmentOld(initialSum, interestRate, termInMonth, replenishmentSum, replenishmentPeriodInMonths, termInMonth);

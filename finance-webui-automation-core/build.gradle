@@ -14,8 +14,8 @@ configurations {
 }
 
 ext {
-    aspectjVersion="1.8.6"
-    allureVersion="1.4.17"
+    aspectjVersion = "1.8.6"
+    allureVersion = "1.4.17"
 }
 
 dependencies {
@@ -27,7 +27,15 @@ dependencies {
     compile "ru.yandex.qatools.allure:allure-testng-adaptor:${allureVersion}"
     // https://mvnrepository.com/artifact/joda-time/joda-time
     compile group: 'joda-time', name: 'joda-time', version: '2.3'
-    agent   "org.aspectj:aspectjweaver:${aspectjVersion}"
+    agent "org.aspectj:aspectjweaver:${aspectjVersion}"
     compile group: 'ru.yandex.qatools.allure', name: 'allure-java-annotations', version: '1.5.4'
+    // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.0.Final'
+    // https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.4.1.Final'
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.3'
+    // https://mvnrepository.com/artifact/org.apache.ibatis/ibatis-core
+    compile group: 'org.apache.ibatis', name: 'ibatis-core', version: '3.0'
 }
 
