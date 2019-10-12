@@ -21,7 +21,7 @@ public class DepositTest extends BaseTest {
     private Object[][] deposit() {
         updateDB();
         return new DepositDao().getAll().stream()
-                .map(student -> new Object[]{student})
+                .map(deposit -> new Object[]{deposit})
                 .toArray(Object[][]::new);
     }
 
