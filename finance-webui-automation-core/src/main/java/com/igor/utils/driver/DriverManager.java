@@ -4,7 +4,9 @@ import com.igor.utils.property.Property;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
+import java.io.File;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +33,9 @@ public class DriverManager {
     private static void initializeDriver(){
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(HEADLESS_MODE);
-        DRIVER_POOL.set(new ChromeDriver(options));
+        options.addExtensions(new File("src/main/resources/adBlockExtension.crx"));
+        ChromeDriver driver = new ChromeDriver(options);
+        DRIVER_POOL.set(driver);
         DRIVER_POOL.get().manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         DRIVER_POOL.get().manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
         DRIVER_POOL.get().manage().timeouts().setScriptTimeout(50, TimeUnit.SECONDS);

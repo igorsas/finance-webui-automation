@@ -29,15 +29,12 @@ public class DepositUtil {
                                          ReplenishmentType replenishmentType, BigDecimal replenishmentSum) {
         int termInDays = Days.daysBetween(new LocalDate(startDate), new LocalDate(finishDate)).getDays();
         BigDecimal finalSum;
-        if (replenishmentType.getType().equals(MONTHLY_STR)) {
-            finalSum = getFinalSumByCapitalizationType(initialSum, interestRate, startDate, finishDate, termInDays, capitalizationType, replenishmentSum, MONTH_IN_MONTH);
-        } else if (replenishmentType.getType().equals(QUARTERLY_STR)) {
-            finalSum = getFinalSumByCapitalizationType(initialSum, interestRate, startDate, finishDate, termInDays, capitalizationType, replenishmentSum, MONTH_IN_QUARTER);
-        } else if (replenishmentType.getType().equals(YEARLY_STR)) {
-            finalSum = getFinalSumByCapitalizationType(initialSum, interestRate, startDate, finishDate, termInDays, capitalizationType, replenishmentSum, MONTH_IN_YEAR);
-        } else {
-            finalSum = getFinalSumByCapitalizationType(initialSum, interestRate, startDate, finishDate, termInDays, capitalizationType, replenishmentSum, termInDays);
-        }
+        String replenishmentTypeStr = replenishmentType.getType();
+        finalSum = getFinalSumByCapitalizationType(initialSum, interestRate, startDate, finishDate, termInDays,
+                capitalizationType, replenishmentSum,
+                replenishmentTypeStr.equals(MONTHLY_STR) ? MONTH_IN_MONTH :
+                        replenishmentTypeStr.equals(QUARTERLY_STR) ? MONTH_IN_QUARTER :
+                                replenishmentTypeStr.equals(YEARLY_STR) ? MONTH_IN_YEAR : termInDays);
         return finalSum;
     }
 
@@ -50,15 +47,12 @@ public class DepositUtil {
                                                               BigDecimal replenishmentSum,
                                                               int replenishmentPeriodInMonths) {
         BigDecimal finalSum;
-        if (capitalizationType.getType().equals(MONTHLY_STR)) {
-            finalSum = getFinalSumByCapitalizationAndReplenishment(initialSum, interestRate, startDate, finishDate, termInMonth, replenishmentSum, replenishmentPeriodInMonths, MONTH_IN_MONTH);
-        } else if (capitalizationType.getType().equals(QUARTERLY_STR)) {
-            finalSum = getFinalSumByCapitalizationAndReplenishment(initialSum, interestRate, startDate, finishDate, termInMonth, replenishmentSum, replenishmentPeriodInMonths, MONTH_IN_QUARTER);
-        } else if (capitalizationType.getType().equals(YEARLY_STR)) {
-            finalSum = getFinalSumByCapitalizationAndReplenishment(initialSum, interestRate, startDate, finishDate, termInMonth, replenishmentSum, replenishmentPeriodInMonths, MONTH_IN_YEAR);
-        } else {
-            finalSum = getFinalSumByCapitalizationAndReplenishment(initialSum, interestRate, startDate, finishDate, termInMonth, replenishmentSum, replenishmentPeriodInMonths, termInMonth);
-        }
+        String capitalizationTypeStr = capitalizationType.getType();
+        finalSum = getFinalSumByCapitalizationAndReplenishment(initialSum, interestRate, startDate, finishDate,
+                termInMonth, replenishmentSum, replenishmentPeriodInMonths,
+                capitalizationTypeStr.equals(MONTHLY_STR) ? MONTH_IN_MONTH :
+                        capitalizationTypeStr.equals(QUARTERLY_STR) ? MONTH_IN_QUARTER :
+                                capitalizationTypeStr.equals(YEARLY_STR) ? MONTH_IN_YEAR : termInMonth);
         return finalSum;
     }
 
@@ -74,7 +68,7 @@ public class DepositUtil {
         DateTime currentDate = startDate;
         int daysInYear = 365;
         BigDecimal interestRatePerDay = interestRate.divide(BigDecimal.valueOf(daysInYear), 10, BigDecimal.ROUND_HALF_EVEN);
-        BigDecimal currentRate = BigDecimal.valueOf(0.0);
+        BigDecimal currentCapitalizationSum = BigDecimal.valueOf(0.0);
 
         int daysInCurrentCapitalizationPeriod = Days.daysBetween(new LocalDate(currentDate),
                 new LocalDate(currentDate.plusMonths(capitalizationPeriodInMonths))).getDays();
@@ -83,15 +77,16 @@ public class DepositUtil {
                 new LocalDate(currentDate.plusMonths(replenishmentPeriodInMonths))).getDays();
 
         for (int i = 0, currentCapitalizationDay = 0, currentReplenishmentDay = 0;
-             i <= termInDays;
+             i < termInDays;
              i++, currentCapitalizationDay++, currentReplenishmentDay++) {
-
-            if (currentCapitalizationDay == daysInCurrentCapitalizationPeriod) {
+            currentCapitalizationSum = currentCapitalizationSum.add(finalSum.multiply(interestRatePerDay));
+            currentDate = currentDate.plusDays(1);
+            if (currentDate.equals(finishDate) || currentCapitalizationDay == daysInCurrentCapitalizationPeriod) {
                 currentCapitalizationDay = 0;
                 daysInCurrentCapitalizationPeriod = Days.daysBetween(new LocalDate(currentDate),
                         new LocalDate(currentDate.plusMonths(capitalizationPeriodInMonths))).getDays();
-                finalSum = MoneyUtil.roundValue(finalSum.add(finalSum.multiply(currentRate)), 2);
-                currentRate = BigDecimal.valueOf(0.0);
+                finalSum = finalSum.add(currentCapitalizationSum);
+                currentCapitalizationSum = BigDecimal.valueOf(0.0);
             }
 
             if (currentReplenishmentDay == daysInCurrentReplenishmentPeriod) {
@@ -103,9 +98,6 @@ public class DepositUtil {
                         new LocalDate(currentDate.plusMonths(replenishmentPeriodInMonths))).getDays();
                 finalSum = finalSum.add(replenishmentSum);
             }
-
-            currentDate = currentDate.plusDays(1);
-            currentRate = currentRate.add(interestRatePerDay);
         }
 
         return finalSum;

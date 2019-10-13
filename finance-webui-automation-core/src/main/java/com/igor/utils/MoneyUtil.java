@@ -15,7 +15,7 @@ public class MoneyUtil {
     }
 
     public static BigDecimal roundValue(BigDecimal value, int accuracy) {
-        return value.setScale(accuracy, BigDecimal.ROUND_HALF_EVEN);
+        return value.setScale(accuracy, BigDecimal.ROUND_HALF_UP);
     }
 
     public static BigDecimal roundUp(BigDecimal value, int accuracy) {
