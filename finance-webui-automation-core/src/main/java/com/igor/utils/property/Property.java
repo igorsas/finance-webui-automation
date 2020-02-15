@@ -1,8 +1,5 @@
 package com.igor.utils.property;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;

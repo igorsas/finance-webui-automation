@@ -8,5 +8,5 @@
  */
 
 rootProject.name = 'finance-webui-automation'
-include 'finance-webui-automation-bo'
-
+include "finance-webui-automation-core",
+        "finance-webui-automation-tests"
