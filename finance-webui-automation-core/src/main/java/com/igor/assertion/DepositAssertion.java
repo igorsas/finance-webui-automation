@@ -4,6 +4,7 @@ import com.igor.bo.DepositBO;
 import com.igor.model.daoModel.ReplenishmentType;
 import com.igor.utils.MoneyUtil;
 import org.joda.time.DateTime;
+import org.testng.Reporter;
 
 import java.math.BigDecimal;
 
@@ -15,10 +16,12 @@ public class DepositAssertion {
         BigDecimal amountInSelectedCurrency = depositBO.getInitialSumInSelectedCurrency();
         BigDecimal amountInUAH = depositBO.getInitialSumInUAH();
         BigDecimal rate = depositBO.getRate();
+        Reporter.log(String.format("Assert exchange rate for initial sum.\namountInSelectedCurrency: %s, amountInUAH: %s, rate: %s", amountInSelectedCurrency, amountInUAH, rate));
         PriceAssertion.assertPrice(MoneyUtil.convertMoney(amountInSelectedCurrency, rate, 2), amountInUAH, "Rate for initial sum is different");
 
         amountInSelectedCurrency = depositBO.getSumOfPercentsInSelectedCurrency();
         amountInUAH = depositBO.getSumOfPercentInUAH();
+        Reporter.log(String.format("Assert exchange rate in the end.\namountInSelectedCurrency: %s, amountInUAH: %s, rate: %s", amountInSelectedCurrency, amountInUAH, rate));
         PriceAssertion.assertPrice(MoneyUtil.convertMoney(amountInSelectedCurrency, rate, 1), MoneyUtil.roundDown(amountInUAH, 1), "Rate for initial sum is different");
     }
 

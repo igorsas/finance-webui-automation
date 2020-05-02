@@ -52,9 +52,9 @@ public class DepositPO extends BasePO {
     private WebElement initialSumInSelectedCurrency;
     @FindBy(xpath = "//*[@id='info_span']/preceding-sibling::div[@class='info-block']/table[@class='summary_table']/tbody/tr[2]/td[3]")
     private WebElement initialSumInUAH;
-    @FindBy(xpath = "//*[@id='info_span']/preceding-sibling::div[@class='info-block']/table[@class='summary_table']/tbody//p/../../td[2]")
+    @FindBy(xpath = "//*[@id=\"result\"]/div[2]/table/tbody/tr[3]/td[2]")
     private WebElement sumOfPercentsInSelectedCurrency;
-    @FindBy(xpath = "//*[@id='info_span']/preceding-sibling::div[@class='info-block']/table[@class='summary_table']/tbody//p/../../td[3]")
+    @FindBy(xpath = "//*[@id=\"result\"]/div[2]/table/tbody/tr[3]/td[3]")
     private WebElement sumOfPercentInUAH;
     @FindBy(xpath = "//*[@id='info_span']/preceding-sibling::div[@class='info-block']/table[@class='summary_table']/tbody/tr[last()]/td[2]")
     private WebElement finalSum;

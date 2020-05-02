@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="BDD Test Suite" verbose="1" parallel="methods" thread-count="5" configfailurepolicy="continue">
+    <listeners>
+
+        <listener class-name="org.uncommons.reportng.HTMLReporter" />
+
+        <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+
+    </listeners>
     <test name="Login and Send Message Test" annotations="JDK">
         <classes>
-            <class name="com.igor.DepositTest"/>
+            <class name="com.igor.DepositTest">
+                <methods>
+                    <include name="exchangeRateTestUSD" />
+                    <include name="exchangeRateTestEUR" />
+                </methods>
+            </class>
+
         </classes>
     </test>
 </suite>

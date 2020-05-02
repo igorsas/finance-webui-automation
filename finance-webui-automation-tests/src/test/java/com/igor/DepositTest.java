@@ -7,8 +7,12 @@ import com.igor.model.daoModel.Currency;
 import com.igor.model.daoModel.Deposit;
 import com.igor.model.daoModel.ReplenishmentType;
 import com.igor.model.daoModel.Term;
+import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.math.BigDecimal;
+import java.sql.Date;
 
 import static com.igor.assertion.DepositAssertion.assertExchangeRate;
 import static com.igor.assertion.DepositAssertion.assertTotal;
@@ -37,8 +41,49 @@ public class DepositTest extends BaseTest {
         depositBO.setDateAndTerms(term);
         depositBO.setAdditionalInfo(deposit.getReplenishmentSum(), replenishmentType, capitalizationType);
         depositBO.submit();
+        Reporter.log(depositBO.toString());
         assertTotal(depositBO);
-        if(!currency.getCode().equals(UAH_STR)) {
+        if (!currency.getCode().equals(UAH_STR)) {
+            assertExchangeRate(depositBO);
+        }
+    }
+
+    @Test
+    void exchangeRateTestUSD() {
+        Currency currency = new Currency("USD");
+
+        ReplenishmentType replenishmentType = new ReplenishmentType("none");
+        ReplenishmentType capitalizationType = new ReplenishmentType("monthly");
+        Term term = new Term(new Date(2019, 12, 13), 5, "months");
+
+        DepositBO depositBO = new DepositBO();
+        depositBO.setMainDepositInfo(currency, BigDecimal.valueOf(1000), BigDecimal.valueOf(4.5));
+        depositBO.setDateAndTerms(term);
+        depositBO.setAdditionalInfo(BigDecimal.valueOf(0), replenishmentType, capitalizationType);
+        depositBO.submit();
+        Reporter.log(depositBO.toString());
+        assertTotal(depositBO);
+        if (!currency.getCode().equals(UAH_STR)) {
+            assertExchangeRate(depositBO);
+        }
+    }
+
+    @Test
+    void exchangeRateTestEUR() {
+        Currency currency = new Currency("EUR");
+
+        ReplenishmentType replenishmentType = new ReplenishmentType("none");
+        ReplenishmentType capitalizationType = new ReplenishmentType("monthly");
+        Term term = new Term(new Date(2019, 12, 13), 5, "months");
+
+        DepositBO depositBO = new DepositBO();
+        depositBO.setMainDepositInfo(currency, BigDecimal.valueOf(1000), BigDecimal.valueOf(4.5));
+        depositBO.setDateAndTerms(term);
+        depositBO.setAdditionalInfo(BigDecimal.valueOf(0), replenishmentType, capitalizationType);
+        depositBO.submit();
+        Reporter.log(depositBO.toString());
+        assertTotal(depositBO);
+        if (!currency.getCode().equals(UAH_STR)) {
             assertExchangeRate(depositBO);
         }
     }

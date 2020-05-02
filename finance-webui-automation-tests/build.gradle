@@ -12,6 +12,7 @@ repositories {
 }
 
 dependencies {
+    compile project(":finance-webui-automation-core")
     testCompile 'org.testng:testng:7.0.0-beta3'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.8.1'
     // https://mvnrepository.com/artifact/joda-time/joda-time
@@ -24,9 +25,17 @@ dependencies {
     compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.3'
     // https://mvnrepository.com/artifact/org.apache.ibatis/ibatis-core
     compile group: 'org.apache.ibatis', name: 'ibatis-core', version: '3.0'
+    compile("org.uncommons:reportng:1.1.2") {
+        exclude group: "org.testng", module: "testng"
+    }
 }
 
 test {
-    useTestNG()
+    useTestNG() {
+        options {
+            listeners << 'org.uncommons.reportng.HTMLReporter'
+            listeners << 'org.uncommons.reportng.JUnitXMLReporter'
+        }
+    }
     systemProperty 'allure.results.directory', 'build/allure-results'
 }

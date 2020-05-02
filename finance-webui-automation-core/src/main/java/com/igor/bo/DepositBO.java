@@ -130,4 +130,22 @@ public class DepositBO {
     public Currency getCurrency() {
         return currency;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("DepositBO{");
+        sb.append("depositPO=").append(depositPO);
+        sb.append(", currency=").append(currency);
+        sb.append(", initialSum=").append(initialSum);
+        sb.append(", interestRate=").append(interestRate);
+        sb.append(", startDate=").append(startDate);
+        sb.append(", finishDate=").append(finishDate);
+        sb.append(", term=").append(term);
+        sb.append(", termType='").append(termType).append('\'');
+        sb.append(", regularReplenishmentSum=").append(regularReplenishmentSum);
+        sb.append(", replenishmentType=").append(replenishmentType);
+        sb.append(", capitalizationType=").append(capitalizationType);
+        sb.append('}');
+        return sb.toString();
+    }
 }
