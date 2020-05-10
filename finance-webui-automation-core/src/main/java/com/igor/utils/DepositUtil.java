@@ -66,13 +66,12 @@ public class DepositUtil {
                                                                           int capitalizationPeriodInMonths) {
         BigDecimal finalSum = initialSum;
         DateTime currentDate = startDate;
+        //на ресурсі було вказано, що при розрахунку процентної ставки передбачається, що у році 365 днів
         int daysInYear = 365;
         BigDecimal interestRatePerDay = interestRate.divide(BigDecimal.valueOf(daysInYear), 10, BigDecimal.ROUND_HALF_EVEN);
         BigDecimal currentCapitalizationSum = BigDecimal.valueOf(0.0);
-
         int daysInCurrentCapitalizationPeriod = Days.daysBetween(new LocalDate(currentDate),
                 new LocalDate(currentDate.plusMonths(capitalizationPeriodInMonths))).getDays();
-
         int daysInCurrentReplenishmentPeriod = Days.daysBetween(new LocalDate(currentDate),
                 new LocalDate(currentDate.plusMonths(replenishmentPeriodInMonths))).getDays();
 

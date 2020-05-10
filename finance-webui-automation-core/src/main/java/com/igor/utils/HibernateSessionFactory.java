@@ -25,7 +25,8 @@ public class HibernateSessionFactory {
                         .addAnnotatedClass(ReplenishmentType.class)
                         .addAnnotatedClass(Deposit.class);
 
-                StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+                StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
+                        .applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());
             } catch (Throwable e) {
                 System.err.println("Failed to create sessionFactory object." + e);

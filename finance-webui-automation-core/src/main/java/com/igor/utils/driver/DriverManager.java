@@ -33,7 +33,7 @@ public class DriverManager {
     private static void initializeDriver(){
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(HEADLESS_MODE);
-        options.addExtensions(new File("src/main/resources/addBlockExtension.crx"));
+//        options.addExtensions(new File("src/main/resources/addBlockExtension.crx"));
         ChromeDriver driver = new ChromeDriver(options);
         DRIVER_POOL.set(driver);
         DRIVER_POOL.get().manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
